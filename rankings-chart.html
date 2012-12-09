@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>ATP Rankings Chart</title>
+  <meta name="description" content="ATP Rankings Chart">
+  <meta name="author" content="Guoliang Cao">
+  <meta name="keywords" content="ATP, Roger Federer, Novak Djokovic, Rafael Nadal, Andy Murray">
+  <style>
+    header {
+      font-size: 16px;
+    }
+    header .generated-note {
+      font-size: 10px;
+    }
+  </style>
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+  <script src="rankings.js"></script>
+  <script src="js/jquery.jqplot.min.js"></script>
+  <script src="js/jqplot.canvasTextRenderer.min.js"></script>
+  <script src="js/jqplot.canvasAxisTickRenderer.min.js"></script>
+  <script src="js/jqplot.categoryAxisRenderer.min.js"></script>
+  <script src="js/jqplot.highlighter.min.js"></script>
+  <script src="js/jqplot.cursor.min.js"></script>
+  <script src="js/jqplot.pointLabels.min.js"></script>
+</head>
+<body>
+  <header>
+    ATP rankings chart for top 100 players
+    <div class='generated-note'>(generated at <span class='generated-at'></span>)</div>
+  </header>
+  <div id="rankings-chart" style="margin-top: 20px">
+  </div>
+  <script type="text/javascript">
+    window.onload = function(){
+      $('.generated-at').text(rankings.time);
+      window.d = $.map(rankings.data, function(v, i){return [[v.rank, v.points]]});
+      window.labels = [];
+      for (var i=0; i<10; i++) {
+        labels[i] = rankings.data[i].first[0] + '. ' + rankings.data[i].last;
+      }
+      $.jqplot('rankings-chart', [d], {
+        seriesDefaults: { 
+          pointLabels: { 
+            show:true,
+            location: 'ne',
+            labels: labels,
+            fontSize: '9t',
+            color: '#999'
+          } 
+        },
+        axes: {
+          xaxis: {
+            label: "Rank",
+            min: 0,
+            max: 50,
+            numberTicks: 6
+          },
+          yaxis: {
+            min: 0,
+            max: 15000,
+            numberTicks: 7,
+            autoscale:true,
+            tickOptions: {
+              angle: -90,
+              fontSize: '9pt',
+              labelPosition: 'middle'
+            }
+          }
+        },
+        highlighter: {
+          show: true,
+          sizeAdjust: 7.5
+        },
+        cursor: {
+          show: false
+        },
+        axesDefaults: {
+          tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+        }
+      });
+    }
+  </script>
+</body>
+</html>
