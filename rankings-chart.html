@@ -33,7 +33,7 @@
 </head>
 <body>
   <header>
-    ATP rankings chart for top 100 players
+    ATP rankings chart for top 50 players
     <div class='generated-note'>(generated at <span class='generated-at'></span>)</div>
   </header>
   <div id="rankings-chart">
@@ -74,6 +74,11 @@
           }
         }
       });
+      $('#rankings-chart').bind('jqplotDataClick',
+        function (ev, seriesIndex, pointIndex, data) {
+          if (windows.console) console.log(seriesIndex, pointIndex, data);
+        }
+      );
     }
   </script>
 </body>
