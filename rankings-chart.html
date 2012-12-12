@@ -76,7 +76,7 @@
       });
       $('#rankings-chart').bind('jqplotDataClick',
         function (ev, seriesIndex, pointIndex, data) {
-          if (windows.console) console.log(seriesIndex, pointIndex, data);
+          if (window.console) console.log(seriesIndex, pointIndex, data);
         }
       );
     }
