@@ -5,7 +5,7 @@ agent = Mechanize.new
 page = agent.get('http://www.atpworldtour.com/Rankings/Singles.aspx')
 
 is_first = true
-i = 2
+i = 11
 page.search('.rankingsContent tr').each do |row|
   break if i <= 0
   i -= 1
