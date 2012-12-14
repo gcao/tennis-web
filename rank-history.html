@@ -15,6 +15,11 @@
     }
     #rank-history {
       margin-top: 20px;
+      margin-bottom: 20px;
+      height: 600px;
+    }
+    table.jqplot-table-legend {
+      width:auto;
     }
   </style>
   <!--[if lt IE 9]>
@@ -46,10 +51,13 @@
   <script type="text/javascript">
     window.onload = function(){
       $('.generated-at').text(rankings.time);
-      $.jqplot('rank-history', [history1, history2, history3, history4], {
+      var data = [history1, history2, history3, history4];
+      var legendLabels = $.map(data, function(v, i){ return rankings.data[i].first + ' ' + rankings.data[i].last; });
+      $.jqplot('rank-history', data, {
         seriesDefaults: {
+          lineWidth: 1,
           markerOptions: {
-            size: 2
+            size: 1
           }
         },
         axes: {
@@ -66,7 +74,7 @@
           show: true,
           location: 'n',
           placement: 'outsideGrid',
-          labels: [rankings.data[0].last, rankings.data[1].last]
+          labels: legendLabels
         },
         highlighter: {
           show: true,
