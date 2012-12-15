@@ -18,25 +18,32 @@ page = agent.get('http://www.atpworldtour.com/Tournaments/Event-Calendar.aspx')
 
 tournaments = []
 page.search('.calendarTable tr').each do |row|
-  name  = row.search('td:nth-child(3) a').text.strip
-  url   = row.search('td:nth-child(3) a').first.attr('href')
-  place = row.search('td:nth-child(3) :nth-child(3)').text.strip
+  tournament = {}
+  tournaments << tournament
+  tournament['name']  = row.search('td:nth-child(3) a').text.strip
+  tournament['url']   = row.search('td:nth-child(3) a').first.attr('href')
+  tournament['place'] = row.search('td:nth-child(3) :nth-child(3)').text.strip
 
-  day, month, year = row.search('td:nth-child(2)').text.split('.')
-  start = Date.new(year.to_i, month.to_i, day.to_i)
-
-  if logo = row.search('td:nth-child(1) img').first
-    type = detect_tournament_type logo.attr('title')
+  geo = JSON.parse agent.get('http://maps.googleapis.com/maps/api/geocode/json', address: place, sensor: false).body
+  sleep 0.2
+  begin
+    location = geo['results'].first['geometry']['location']
+    tournament['latitude'] = location['lat']
+    tournament['longitude'] = location['lng']
+  rescue => e
+    puts e
   end
 
-  title_holder = ''
-  tournaments << {
-    name:  name,
-    url:   url,
-    place: place,
-    start: start,
-    type:  type
-  }
+  day, month, year = row.search('td:nth-child(2)').text.split('.')
+  tournament['start'] = Date.new(year.to_i, month.to_i, day.to_i)
+
+  if logo = row.search('td:nth-child(1) img').first
+    tournament['type'] = detect_tournament_type logo.attr('title')
+  end
+
+  if title_holder = row.search('td.lastCell a:first-child').first
+    tournament['title_holder'] = {name: title_holder.text.strip, url: title_holder.attr('href')}
+  end
 end
 
 result = {time: Time.now, data: tournaments}
