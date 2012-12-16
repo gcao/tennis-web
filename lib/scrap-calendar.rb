@@ -6,6 +6,7 @@ def detect_tournament_type type_str
   when /250/         then 'atp250'
   when /500/         then 'atp500'
   when /1000/        then 'atp1000'
+  when /atp final/i  then 'atptourfinal'
   when /grand slam/i then 'grandslam'
   when /davis/       then 'daviscup'
   else                    type_str
@@ -22,7 +23,7 @@ page.search('.calendarTable tr').each do |row|
   tournaments << tournament
   tournament['name']  = row.search('td:nth-child(3) a').text.strip
   tournament['url']   = row.search('td:nth-child(3) a').first.attr('href')
-  tournament['place'] = row.search('td:nth-child(3) :nth-child(3)').text.strip
+  tournament['place'] = place = row.search('td:nth-child(3) :nth-child(3)').text.strip
 
   geo = JSON.parse agent.get('http://maps.googleapis.com/maps/api/geocode/json', address: place, sensor: false).body
   sleep 0.2
