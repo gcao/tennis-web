@@ -36,15 +36,20 @@ var map = new google.maps.Map(document.getElementById('map'), {
   center: new google.maps.LatLng(20, 0),
   mapTypeId: google.maps.MapTypeId.TERRAIN
 });
+var atp500Markers = [];
+var atp250Markers = [];
 $.each(tournaments.data, function(i, tournament){
   var icon = '';
   var zIndex = 1;
+  var show = true;
   if (tournament.type === 'atp250') {
     icon = 'http://www.atpworldtour.com/~/media/810218DC73784BEEA6EF0978B2842A69.ashx?w=31&h=36';
     zIndex = 2;
+    show = false;
   } else if (tournament.type === 'atp500') {
     icon = 'http://www.atpworldtour.com/~/media/1DB04CA8505648B7B511FA1E37F1E3BA.ashx?w=31&h=36';
     zIndex = 3;
+    show = false;
   } else if (tournament.type === 'atp1000') {
     icon = 'http://www.atpworldtour.com/~/media/F5219431817E4ED3B773BF9B006A9ACF.ashx?w=31&h=42';
     zIndex = 4;
@@ -73,10 +78,15 @@ $.each(tournaments.data, function(i, tournament){
   var myLatLng = new google.maps.LatLng(tournament.latitude, tournament.longitude);
   var marker = new google.maps.Marker({
     position: myLatLng,
-    map: map,
+    map: show ? map : null,
     icon: icon,
     zIndex: zIndex
   });
+  if (tournament.type === 'atp250') {
+    atp250Markers.push(marker);
+  } else if (tournament.type === 'atp500') {
+    atp500Markers.push(marker);
+  }
   var infoWindow = new google.maps.InfoWindow({
     content: label
   });
@@ -84,7 +94,23 @@ $.each(tournaments.data, function(i, tournament){
     infoWindow.open(map, marker);
   });
 });
+
+google.maps.event.addListener(map, 'zoom_changed', function() {
+  var zoom = map.getZoom();
+
+  if (zoom <= 4) {
+    $.each(atp250Markers, function(i, marker){ marker.setMap(null); });
+  } else {
+    $.each(atp250Markers, function(i, marker){ marker.setMap(map); });
+  }
+  if (zoom <= 3) {
+    $.each(atp500Markers, function(i, marker){ marker.setMap(null); });
+  } else {
+    $.each(atp500Markers, function(i, marker){ marker.setMap(map); });
+  }
+});
   </script>
+
   <div id="disqus_thread"></div>
   <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
