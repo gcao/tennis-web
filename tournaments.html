@@ -71,10 +71,14 @@ $.each(tournaments.data, function(i, tournament){
     return;
   }
 
-  var label = '<div class="map-info"><p class="tournament-name">' + 
-    tournament.name + '</p><p class="tournament-time">' + 
-    tournament.start + '</p><p class="tournament-place">@' + 
-    tournament.place + '</p></div>';
+  var label = '<div class="map-info">' +
+    '<p class="tournament-name"><a href="http://www.atpworldtour.com' +
+    tournament.url + '" target="_new">' + tournament.name + '</a>' +
+    '</p><p><span class="tournament-time">' + tournament.start +
+    '</span> @ <span class="tournament-place">' + tournament.place +
+    '</span></p><p class="tournament-title-holder">Title Holder: <a href="http://www.atpworldtour.com' + 
+    tournament.title_holder.url + '" target="_new">' + tournament.title_holder.name +  '</a>' +
+    '</p></div>';
   var myLatLng = new google.maps.LatLng(tournament.latitude, tournament.longitude);
   var marker = new google.maps.Marker({
     position: myLatLng,
