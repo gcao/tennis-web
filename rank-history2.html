@@ -12,7 +12,8 @@
       font-size: 16px;
     }
     header .generated-note {
-      font-size: 10px;
+      display: inline;
+      font-size: small;
     }
     #rank-history {
       margin-top: 20px;
@@ -37,7 +38,7 @@
 </head>
 <body>
   <header>
-    ATP rank history for Roger Federer, Novak Djokovic, Rafael Nadal, Andy Murray
+    ATP rank history
     <div class='generated-note'>(generated at <span class='generated-at'></span>)</div>
   </header>
   <div id="rank-history">
@@ -55,7 +56,7 @@
       nv.addGraph(function() {
         var chart = nv.models.lineChart()
                       .x(function(d) { return Date.parse(d[0]) })
-                      .y(function(d) { return d[1] })
+                      .y(function(d) { return 50 - d[1] })
                       .color(d3.scale.category10().range());
 
         chart.xAxis
@@ -70,10 +71,10 @@
              });
 
         chart.yAxis
-             .tickValues([ 1, 2, 3, 4, 5, 10, 20, 30, 40, 50])
+             .tickValues([0, 10, 20, 30, 40, 45, 46, 47, 48, 49])
              .showMaxMin(false)
              .tickFormat(function(d) {
-               return d;
+               return 50-d;
              });
 
         d3.select('#rank-history svg')
