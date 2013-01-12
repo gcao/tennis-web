@@ -22,7 +22,7 @@
   <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-  <script src="rankings.js"></script>
+  <script src="data/rankings.js"></script>
   <script src="js/jquery.jqplot.min.js"></script>
   <script src="js/jqplot.canvasTextRenderer.min.js"></script>
   <script src="js/jqplot.canvasAxisTickRenderer.min.js"></script>
@@ -41,7 +41,7 @@
   </div>
   <script type="text/javascript">
     window.onload = function(){
-      $('.generated-at').text(rankings.time);
+      $('.generated-at').text(rankings.generated_at);
 
       window.d = $.map(rankings.data, function(v, i){return [[v.rank + ' ' + v.last, v.points]]});
 

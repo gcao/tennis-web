@@ -29,12 +29,11 @@
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
   <script src="/nvd3/lib/d3.v2.js"></script>
   <script src="/nvd3/nv.d3.js"></script>
-  <script src="/js/test-data.js"></script>
-  <script src="rankings.js"></script>
-  <script src="rank-history-1.js"></script>
-  <script src="rank-history-2.js"></script>
-  <script src="rank-history-3.js"></script>
-  <script src="rank-history-4.js"></script>
+  <script src="data/rankings.js"></script>
+  <script src="data/roger_federer_rank_history.js"></script>
+  <script src="data/rafael_nadal_rank_history.js"></script>
+  <script src="data/novak_djokovic_rank_history.js"></script>
+  <script src="data/andy_murray_rank_history.js"></script>
 </head>
 <body>
   <header>
@@ -47,12 +46,12 @@
   <script type="text/javascript">
     window.onload = function(){
       $('.generated-at').text(rankings.time);
-      var data = [
-        {key: 'Novak Djokovic', values: history1},
-        {key: 'Roger Federer', values: history2},
-        {key: 'Rafael Nadal', values: history4},
-        {key: 'Andy Murray', values: history3}
-      ]
+      var data = $.map([novak_djokovic_rank_history, 
+                        roger_federer_rank_history, 
+                        rafael_nadal_rank_history, 
+                        andy_murray_rank_history], function(e) {
+        return {key: e.first + ' ' + e.last, values: e.history}; 
+      });
       nv.addGraph(function() {
         var chart = nv.models.lineChart()
                       .x(function(d) { return Date.parse(d[0]) })
